@@ -1,0 +1,6 @@
+- name: copy file
+  hosts: all
+  tasks:
+    copy:
+    src: abc.txt
+    dest: /etc

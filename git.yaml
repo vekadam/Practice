@@ -1,0 +1,11 @@
+- name: Install git 
+  hosts: all
+  tasks:
+    - name: copy script on host machine
+      copy:
+        src: /home/ubuntu/labs/scripts/git.sh 
+        dest: /home/ubuntu
+        mode: '0755'
+
+    - name: run script on host machine
+      shell: sudo bash /home/ubnutu/git.sh 

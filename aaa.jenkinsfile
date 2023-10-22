@@ -1,0 +1,12 @@
+pipeline {
+    agent {
+        label 'node1'
+    }
+    stages {
+        stage('Print') {
+            steps {
+                echo 'Hello'
+            }
+        }
+    }
+}

@@ -1,0 +1,5 @@
+hosts: all
+become: yes
+tasks:
+  - name: create svc
+    shell: docker service create --name abc --replicas 1 -P vekadam/myapp:{{ver}}
