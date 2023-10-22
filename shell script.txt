@@ -1,0 +1,4 @@
+What is the importance of $#?
+$# usually holds the number of arguments, although it may be different for functions. To put it simply, it was used to store the number of command-line arguments passed to a shell script.
+
+https://www.interviewbit.com/shell-scripting-interview-questions/

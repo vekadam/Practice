@@ -1,0 +1,446 @@
+docker images 
+docker ps
+docker ps -a
+docker pull imagename
+docker run -d -p 1234:80 nginx
+docker run -d -P nginx 
+docker exec -it imageid bash
+docker logs
+docker rm containerid
+docker rm -f contid
+docker rmi imagename 
+
+manual image creation:
+enter to running container using 'docker exec -it' and make changes 
+then create new images using 'docker commit -m "msg" containerID newimagename'
+
+image creation using dockerfile
+docker build -t imagename
+docker build -f dockerfileName -t imagename 
+
+to come out of running container - ctrl pq 
+
+docker login 
+docker push dockerhubusername/reponame:tag 
+
+docker volume create volumename 
+docker run -d -P volname:datapath_from_container_to_store imagename 
+
+docker-compose 
+it looks for docker-compose file which is written in yaml synatx 
+it can deploy multiple images in single shot/ at time
+docker-compose up -d # it will start containers 
+docker-compose down 
+docker-compose up --scale imagename=2 imagename=4 -d
+docker-compose -f abc.yml up -d 
+
+docker swarm
+docker swarm init
+docker node ls 
+docker swarm join-token worker - to regenerate token 
+docker service create --name svcName --replicas 2 -p 1234:80 nginx 
+docker service ls 
+docker service ps svcName 
+docker service scale svcName=count (like svc1=4)
+docker service rm svcName 
+docker service update --iamge imageName svcName 
+
+docker stack 
+it is a set of services
+we can use multiple image in docker stack 
+docker stack deploy -c abc.yml stackName 
+docker stack services stackName 
+
+Conatiner lifecycle - 
+
+docker networking 
+bridge network - default network mode in docker and user can it's own bridge network (containers can communicate with each other using name & ID if they are created under user's network)
+host network is network of host machine on which docker is running
+overlay network -works in swarm mode only 
+docker network create networkName (like mynet) 
+docker run -d -P --name abc --net mynet nginx 
+
+CMD: Sets default parameters that can be overridden from the Docker command line interface (CLI) while running a docker container.
+ENTRYPOINT: Sets default parameters that cannot be overridden while executing Docker containers with CLI parameters.
+
+
+Docker multistage build
+
+
+The primary difference between horizontal scaling and vertical scaling is that horizontal scaling involves adding more machines or nodes to a system, while vertical scaling involves adding more power (CPU, RAM, storage, etc.) to an existing machine.
+---------------------------
+AWS Key Points 
+
+IAM 
+Users
+Groups
+Policies/Permissions
+Role
+MFA 
+
+AWS CLI/ Management Console/ AWS Cloudshell 
+Access key & Secret Key
+
+Billing & Budget limit alert 
+----------------------------------------
+EC2
+Instance types
+General Purpose
+Compute Optimized - Great for tasks that require high performance processors (start with C name) 
+Storage Optimized - Great for tasks that requires high, sequential read and write access to large data sets on local storage 
+Memory Optimized - For workloads that process large data sets in memory ( R series )
+
+m5.2xlarge - m: instance class, 5: hardware generation, 2xlarge: instance size within the class 
+
+Purchasing options
+On demand
+Reserved Instance
+Saving plans 
+Dedicated Hosts 
+Dedicated Instances 
+Spot Instances 
+Spot fleet 
+
+Public & Private IP & Elastic IP - EC2
+By default, EC2 comes with :
+Private IP for internal AWS network
+Public IP for the WWW (internet)
+If you need to have a fixed public IP for your instance, you need an elastic IP 
+
+Placement groups
+Cluster 
+Spread
+Partition 
+
+Elastic Network Interface 
+EC2 Hibernate 
+
+EC2 Storage
+EBS - It can not be shared between AZ's but we can create Snapshot from it and Snapshot can be copied to diffrerent AZ (EBS is network drive not a hard disk)
+EC2 Instance Store - Has better/fast performance as this is a physical/hard drive but can be lost if base hardware failed so better to use for temp usage 
+EBS Volume types 
+gp2/gp3 (SSD) - General purpose SSD volume that balances price and performance for a wide variety of workloads 
+io1 / io2 (SSD) - Highest-performance SSD volume for mission-critical low-latency or high-throughput workloads 
+st 1 (HDD) - Low cost HDD volume deshigned for frequently acceessed, throughput-intensive workloads 
+sc 1 (HDD)
+EBS Multiattach is possible with io1/ io2 only and upto max 16 instances can attached 
+EBS Encryption 
+EFS - Elastic File System 	
+---------------------------------
+
+High Availability & Scalability
+
+Horizontal Scaling
+Vertical Scaling
+High Availability 
+
+ELB - Elastic Load Balancing 
+Application Load Balancer
+Network Load Balancer
+Gateway Load Balancer 
+Target Groups
+Rules for litsening 
+Sticky Sessions
+Security groups for targets
+Cross Zone Balancing 
+
+Round Robin and other load balancing algorithms 
+
+Auto Scaling Groups
+ASG Scaling Policies 
+Target Tracking Scaling
+Simple/ Step Scaling
+Scheduled Actions 
+Predictive Scaling 
+
+ALB - Operates on layer 7. HTTP request. Used for advanced routing. Costly and slow. Path based routing.
+NLB - Operates on layer 4. Used for low latency and high data transmission. Sticky session.
+GWLB - Used for VPN, Firewall application. Higher security 
+
+Autoscaling
+-Manual 
+-Dynamic: Target Tracking, Simple, Step
+-Predictive scaling policies 
+-Scheduled actions 		
+
+Good Metrics to scale on:  CPU Utilization, RequestCount per Target, Average Network In/ Out, Any custom metric 
+
+EC2->ASG->TG->ALB->Clinet 
+
+
+
+-----------------------------------------g
+
+S3 - Simple Storage Service
+ 
+Max upload size for Object is 5Tb 
+Files more than 5TB can be uploaded using multi-part upload 
+S3 Security: Bucket Policy 
+S3 Website
+S3 Versioning (Delete Marker & retrival) 
+S3 Replication 
+CRR - Cross Region Replication
+SRR - Same Region Replication 
+To replicate existing objects turn on batch replication 
+S3 Storage Classes 
+Standard - General Purpose 
+Standard-Infrequent Access (IA)
+One Zone-Infrequent Access 
+Glacier Instant Retrieval 
+Glacier Flexible Retrieval
+Glacier Deep Archive 
+Intelligent Tiering 
+Lifecycle Rules for move Storage Classes
+Requester Pays
+S3 Event Notification  
+S3 Performance 
+Use multi-part upload for big files
+recommended for files > 100MB
+Must use for files > 5GB
+S3 Transfer acceleration 
+Batch Operations
+S3 Security 
+S3 Encryption 
+SSE - server-Side Encryption 
+CSS - Client-Side Encryption
+
+----------------------------------------------------------
+
+VPC - Virtual Private Cloud 
+
+CIDR - Classless Inter Domain Routing 
+Public IP Vs Private IP
+Default VPC
+Custom VPC
+Subnet - Public & Private Subnet 
+A subnet, or subnetwork, is a network inside a network. Subnets make networks more efficient. Through subnetting, network traffic can travel a shorter distance without passing through unnecessary routers to reach its destination.
+(AWS reserves 5 IP in each subnet - first 4 & last 1)
+Internet Gateway - Allow resources in a VPC to connect to the internet 
+Route Table - Need to configure this to target all traffic to IGW 
+Bastion Host - is used to connect EC2 inside Private Subnate ( First connect to EC2 of Public Subnet & then to Pvt from that EC2) 
+NAT Gateway - Allows outbound traffic for Private Subnet Instance (EC2 inside private subnet can connect to internet)
+NACL - A network access control list (NACL) is an optional layer of security for your VPC that acts as a firewall for controlling traffic in and out of one or more subnets.
+Ephemeral Port 
+VPC Peering - Connect two VPC's 
+VPC Endpoints 
+
+------------------------------------------------
+
+Cloudwatch
+
+Amazon CloudWatch collects and visualizes real-time logs, metrics, and event data in automated dashboards to streamline your infrastructure and application maintenance.
+
+Lambda Function/ Serverless  
+
+AWS Lambda is a serverless compute service that runs your code in response to events and automatically manages the underlying compute resources for you. These events may include changes in state or an update, such as a user placing an item in a shopping cart on an ecommerce website.
+--------------------------
+
+EKS
+eksctl
+awscli
+kubectl
+service account
+identity provider for service account
+attach role to service account
+ingress resource
+ingress controller/ alb controller
+alb 
+app deployment file
+app service file
+app ingress file
+
+
+-----------------------------------------------
+
+Jenkins
+
+Build proccess includes - Compile, Code Review, Unit Test, Code Coverage, Package 
+Artifactory tools - Jfrog, Nexus 
+COde review/quality check tool - Sonarqube 
+
+These are the most common Jenkins build triggers:
+Trigger builds remotely
+Build after other projects are built
+Build periodically
+GitHub hook trigger for GITScm polling
+Poll SCM
+
+
+--------------------------------
+
+Terraform
+
+HCL Syntax 
+-Block (Container with attributes inside it in curly braces)
+-Attribute  (key-value pair)
+-Datatypes (strings, numbers, boolean, list, map)
+-Conditions
+-Functions
+-Resource dependancy 
+-Resource
+-Variables
+-Output
+-Providers
+-State file
+
+main.tf
+var.tf
+input.tf
+output.tf
+.tfvars
+
+alias for provider
+input & output variable
+conditional statement 
+
+Modules
+
+Provisioners 
+---------------------------------------------------------
+
+Kubernetes
+
+-Architecture
+Control Plane/ Master
+-Etcd
+-Controller manager
+-Scheduler
+-API server
+-Cloud controller manager
+Node/Worker
+-Kubelet
+-Kube Proxy
+Pods
+Deployment
+Replica Set
+Service
+-Nodeport
+-ClusterIP
+-Load Balancer
+Ingress
+HPA - Horizontal Pod Autoscaling 
+
+kubectl run pod1 --image nginx 
+kubectl get pods
+kubectl get pods -o wide 
+kubectl delete pod pod1 
+
+Kubernetes Manifest (YAML)
+-api version
+-kind
+-metadata 
+-spec
+
+K8s Distributions
+Configmap
+K8s Deployment Strategies 
+K8s Monitoring - prom & graf
+RBAC
+Helm
+K8s Security 
+K8s Troubleshooting & Debug
+
+Pod lifecycle - Pods follow a defined lifecycle, starting in the Pending phase, moving through Running if at least one of its primary containers starts OK, and then through either the Succeeded or Failed phases depending on whether any container in the Pod terminated in failure.
+
+---------------
+
+Linux/Shell
+
+List common commands 
+-Ls, Cp, Mv, Mkdir, Rm, Touch, Vi, Grep, Cat, Su, Chmod
+
+Curl 
+Network troubleshooting utility 
+-Traceroute
+
+Looping Statements in Shell Scripting
+-while statement
+-for statement
+-until statement
+To alter the flow of loop statements, two commands are used they are,  
+-break
+-continue
+
+while <condition>
+do
+
+    <command 1>
+    <command 2>
+    <etc>
+done
+
+for <var> in <value1 value2 ... valuen>
+do
+    <command 1>
+    <command 2>
+    <etc>
+done
+
+until <condition>
+do
+
+    <command 1>
+    <command 2>
+    <etc>
+done
+
+expr
+
+$@ contains the positional arguments eg. abc.sh posn1 posn2 etc
+
+read -p : used to prompt to ask for user input 
+
+Sort : this command is used to sort lines of file 
+sort -r filename : sort in reverse order 	
+sort -n fname : sort in numeric order 
+sort -nr : to sort in reverse numeric 
+
+Find
+$ find [where to start searching from]
+ [expression determines what to find] [-options] [what to find]
+Options:
+
+-exec CMD: The file being searched which meets the above criteria and returns 0 for as its exit status for successful command execution.
+-ok CMD : It works same as -exec except the user is prompted first.
+-inum N : Search for files with inode number ‘N’.
+-links N : Search for files with ‘N’ links.
+-name demo : Search for files that are specified by ‘demo’.
+-newer file : Search for files that were modified/created after ‘file’.
+-perm octal : Search for the file if permission is ‘octal’.
+-print : Display the path name of the files found by using the rest of the criteria.
+-empty : Search for empty files and directories.
+-size +N/-N : Search for files of ‘N’ blocks; ‘N’ followed by ‘c’can be used to measure the size in characters; ‘+N’ means size > ‘N’ blocks and ‘-N’ means size < ‘N’ blocks.
+-user name : Search for files owned by username or ID ‘name’.
+\(expr \) : True if ‘expr’ is true; used for grouping criteria combined with OR or AND.
+! expr : True if ‘expr’ is false.
+Grep 
+-c : This prints only a count of the lines that match a pattern
+-h : Display the matched lines, but do not display the filenames.
+-i : Ignores, case for matching
+-l : Displays list of a filenames only.
+-n : Display the matched lines and their line numbers.
+-v : This prints out all the lines that do not matches the pattern
+-e exp : Specifies expression with this option. Can use multiple times.
+-f file : Takes patterns from file, one per line.
+-E : Treats pattern as an extended regular expression (ERE)
+-w : Match whole word
+-o : Print only the matched parts of a matching line,
+ with each such part on a separate output line.
+
+-A n : Prints searched line and nlines after the result.
+-B n : Prints searched line and n line before the result.
+-C n : Prints searched line and n lines after before the result.
+
+
+$?
+$@
+$*
+$$
+$!
+
+awk
+sed
+top - The top command is used for memory monitoring. It works only on Linux platform. The top command produces an ordered list of running processes selected by user-specified criteria, and updates it periodically. By default, ordering is by CPU usage, and it shows processes that consume maximum CPU.
+nproc
+
+    
